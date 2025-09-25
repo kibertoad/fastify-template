@@ -1,0 +1,53 @@
+{
+	"name": "fastify-template",
+	"engines": {
+		"node": ">=22.18.0"
+	},
+	"type": "module",
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"test": "vitest",
+		"test:coverage": "node --run test -- --coverage",
+		"lint": "biome check . && tsc",
+		"lint:fix": "biome check --write .",
+		"start:dev": "node --env-file=.env src/main.ts",
+		"start:dev:watch": "node --watch --env-file=.env src/server.ts",
+		"start:prod": "node --run build && cross-env NODE_ENV=production node --env-file-if-exists=.env dist/server.js",
+		"docker:start:dev": "docker compose up -d",
+		"docker:stop:dev": "docker compose down",
+		"db:start:dev": "docker compose up -d postgres redis",
+		"db:stop:dev": "docker compose down",
+		"migrate:make": "kysely migrate make",
+		"migrate:up": "cross-env --env-file=.env kysely migrate up",
+		"migrate:down": "cross-env --env-file=.env kysely migrate down",
+		"migrate:latest": "cross-env --env-file=.env kysely migrate latest",
+		"migrate:rollback": "cross-env --env-file=.env kysely migrate rollback",
+		"migrate:test": "cross-env DB_DATABASE=service_db_test --env-file=.env kysely migrate latest"
+	},
+	"dependencies": {
+		"@fastify/awilix": "^5.1.0",
+		"@ts-rest/core": "^3.52.1",
+		"@ts-rest/fastify": "^3.52.1",
+		"awilix": "^12.0.5",
+		"awilix-manager": "^5.6.0",
+		"envase": "^1.0.2",
+		"fastify": "^4.29.1",
+		"fastify-plugin": "^4.5.1",
+		"kysely": "^0.28.7",
+		"pg": "^8.16.3",
+		"pino": "^9.11.0",
+		"pino-pretty": "^13.1.1",
+		"zod": "^3.25.76"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.4",
+		"@types/node": "^24.5.1",
+		"@types/pg": "^8.15.5",
+		"@vitest/coverage-v8": "^3.2.4",
+		"cross-env": "^10.0.0",
+		"kysely-ctl": "^0.19.0",
+		"typescript": "5.9.2",
+		"vitest": "^3.2.4",
+		"yaml": "^2.8.1"
+	}
+}

@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17.5
+    # see https://www.postgresql.org/docs/current/non-durability.html
+    command: '-c full_page_writes=off -c fsync=off -c synchronous_commit=off'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=serviceuser
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=service_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432"]
+      interval: 1s # run the check every 2 seconds
+      timeout: 5s  # fail the check if it takes longer than 5 seconds
+      retries: 10   # require 10 consecutive failures before marking unhealthy
+    volumes:
+      - ./scripts/db/init-dbs.sh:/docker-entrypoint-initdb.d/init-dbs.sh

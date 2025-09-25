@@ -1,0 +1,12 @@
+{
+	"extends": ["./tsconfig.json", "@lokalise/tsconfig/build-app"],
+	"compilerOptions": {
+		"types": ["node"],
+		"noEmit": false,
+		"rewriteRelativeImportExtensions": true,
+		"outDir": "${configDir}/dist",
+		"sourceMap": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}
